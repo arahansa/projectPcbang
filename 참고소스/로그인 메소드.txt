@@ -1,0 +1,99 @@
+//true 반환하면 로그인 성공, false반환하면 로그인 실패
+54.238.254.206:3306
+//로그인
+		public boolean loginMember(String id, String pass) {
+			Connection con = null;
+			PreparedStatement pstmt = null;
+			ResultSet rs = null;
+			String sql = null;
+			String hashPass="hash_pass 초기값";
+			boolean flag = false;
+			try {
+				con = pool.getConnection();
+				sql = "select pass from member where id=?";
+				pstmt = con.prepareStatement(sql);
+				pstmt.setString(1, id);
+				//System.out.println("id 값은 " + id);
+				rs = pstmt.executeQuery();
+				rs.next();
+				hashPass=rs.getString("pass");
+				//System.out.println(hashPass);
+				
+				if (BCrypt.checkpw(pass, hashPass))
+					flag=true;
+								
+			} catch (Exception e) {
+				e.printStackTrace();
+			} finally {
+				pool.freeConnection(con, pstmt, rs);
+			}
+			return flag;
+		}
+
+		
+// ID 중복확인
+		public boolean checkId(String id) {
+			Connection con = null;
+			PreparedStatement pstmt = null;
+			ResultSet rs = null;
+			String sql = null;
+			boolean flag = false;
+			try {
+				con = pool.getConnection();
+				sql = "select id from member where id=?";
+				pstmt = con.prepareStatement(sql);
+				pstmt.setString(1, id);
+				flag = pstmt.executeQuery().next();
+			} catch (Exception e) {
+				e.printStackTrace();
+			} finally {
+				pool.freeConnection(con, pstmt, rs);
+			}
+			return flag;
+		}
+		
+		
+		// 회원가입
+		//에러날시 setInt를 셋스트링으로 바꿔주시면 됩니다.
+		public int insertMember(MemberBean bean) {
+			Connection con = null;
+			PreparedStatement pstmt = null;
+			String sql = null;
+			int flag = 0; // 0은 실패,  1=회원가입 성공, 2=아이디가 중복됨
+					
+			try {
+										
+				//num, id, password, tel, mileage, age
+				con = pool.getConnection();
+				sql = "insert member(id, password, tel, mileage, age )"
+						+ "values(?,?,?,?,?)";
+				pstmt = con.prepareStatement(sql);
+				pstmt.setString(1, id겟텍스트);
+			
+				pstmt.setString(2, 비밀번호.겟텍스 );
+				
+				
+				pstmt.setString(3, 전화번호겟텍스트);
+				
+				
+				pstmt.setInt(4, 마일리지겟텍스트 );
+				
+				
+				pstmt.setInt(5, 나이겟텍스트);
+				
+				
+				if (pstmt.executeUpdate() == 1)
+					flag = 1;
+			
+			} catch (Exception e) {
+				e.printStackTrace();
+				//에러가 발생했을 시 아이디 검사를 해서, 중복된 경우 flag에 2를 돌려준다.
+				if(this.checkId(bean.getId()))
+				{
+					flag = 2;
+				}
+			} finally {
+				pool.freeConnection(con, pstmt);
+			}
+			return flag;
+		}

@@ -1,0 +1,11 @@
+//00.바깥의 프레임에서 메인프레임을 보이게 한다.
+//01.컨트롤타워 싱글톤만들기
+//02.새로운 자리받는 메소드
+//03.컴퓨터 켜짐 from HostPcServer
+//04.컴퓨터 꺼짐 from HostPcServer
+//05.로그인 처리 from HostPcServer
+//06.로그아웃처리 from HostPcServer
+//07.나머지 따옴표 처리 from HostPcServer
+//08. 계속 좌석 계산해주고 바로 밑에 센드 from Seat
+// 09. 계산메소드 from HostPcServer
+// 10. 클라이언트로 부터 받은 메시지
